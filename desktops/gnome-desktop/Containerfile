@@ -1,5 +1,8 @@
 ARG from
 FROM $from
+ARG from
+ENV from="${from}"
+
 
 RUN dnf -y install \
         @gnome-desktop gnome-software-rpm-ostree \
@@ -28,5 +31,7 @@ RUN dnf -y install \
         --exclude snapshot \
         --exclude gnome-tour \
         --exclude malcontent-control && \
-    systemctl enable gdm.service && \
+    if [ "$from" != "quay.io/pocketblue/mipad5-base:42" ]; then \
+        systemctl enable gdm.service; \
+    fi && \
     dnf clean all
