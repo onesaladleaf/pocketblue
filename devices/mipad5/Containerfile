@@ -6,8 +6,8 @@ COPY usr/ /usr/
 
 RUN dnf -y copr enable nik012003/nabu-support && \
     mkdir /boot/dtb && \
-    dnf -y install linux-sm8150 && \
-    set -x; kver=$(cd /usr/lib/modules && echo *-sm8150); dracut -vf /usr/lib/modules/$kver/initramfs.img $kver && \
+    rpm-ostree override remove kernel kernel-{core,modules,modules-core} \
+        --install linux-sm8150 && \
     dnf -y install \
         xiaomi-nabu-firmware \
         pd-mapper qrtr rmtfs tqftpserv \
