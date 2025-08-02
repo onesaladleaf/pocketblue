@@ -1,0 +1,34 @@
+ARG from
+FROM $from
+
+COPY etc/ /etc/
+COPY usr/ /usr/
+
+RUN if [ "$base_tag" != "rawhide" ]; then \
+        # for tqftpserv on 42 \
+        dnf -y config-manager setopt copr:copr.fedorainfracloud.org:nik012003:nabu-support.enabled=1; \
+    fi && \
+    mkdir /boot/dtb && \
+    dnf -y remove kernel && \
+    dnf -y install \
+        kernel \
+        kernel-modules-extra && \
+    dnf -y install \
+        bcm283x-firmware \
+        qcom-firmware \
+        bootmac \
+        hexagonrpc \
+        libssc \
+        pd-mapper qrtr rmtfs tqftpserv \
+        alsa-ucm-mobility-sdm845 \
+        pil-squasher \
+        mobility-tweaks && \
+    systemctl enable bootmac-bluetooth.service && \
+    systemctl enable hexagonrpcd-sdsp.service && \
+    systemctl enable pd-mapper.service && \
+    systemctl enable rmtfs.service && \
+    systemctl enable tqftpserv.service && \
+    systemctl enable msm-modem-uim-selection.service && \
+    dnf clean all
+
+RUN bootc container lint
