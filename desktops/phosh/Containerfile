@@ -5,7 +5,6 @@ COPY etc/ /etc/
 
 RUN dnf -y install \
     @phosh-desktop \
-    phrog \
     gnome-software-rpm-ostree \
     nautilus \
     ptyxis \
@@ -20,7 +19,7 @@ RUN dnf -y install \
     --exclude gnome-photos \
     --exclude squeekboard
 
-RUN systemctl enable --force phrog.service
+RUN systemctl enable --force gdm.service
 
 # clenup
 RUN rm -rf /var/log/* && dnf clean all
