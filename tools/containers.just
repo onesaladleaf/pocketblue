@@ -57,6 +57,10 @@ rechunk *ARGS:
             --output=containers-storage:{{full_image}}
 
 build-chunkah *ARGS:
+    #!/usr/bin/env bash
+    set -xeuo pipefail
+
+    CHUNKAH_CONFIG_STR=$(podman inspect {{full_image}}) || CHUNKAH_CONFIG_STR=
     buildah bud \
         --layers=true \
         --skip-unused-stages=false \
@@ -65,7 +69,7 @@ build-chunkah *ARGS:
         --build-arg="device={{device}}" \
         --build-arg="desktop={{desktop}}" \
         --build-arg="target_tag={{tag}}" \
-        --build-arg="CHUNKAH_CONFIG_STR=$(podman inspect {{full_image}})" \
+        --build-arg="CHUNKAH_CONFIG_STR=${CHUNKAH_CONFIG_STR}" \
         -v=$(pwd):/run/src \
         --security-opt=label=disable \
         {{ if expires_after != "" { "--label quay.expires-after=" + expires_after } else { "" } }} \
