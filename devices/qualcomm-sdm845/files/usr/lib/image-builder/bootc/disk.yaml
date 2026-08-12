@@ -23,6 +23,8 @@ partition_table:
         subvolumes:
           - name: "root"
             mountpoint: "/"
+          - name: "boot"
+            mountpoint: "/boot"
           - name: "home"
             mountpoint: "/home"
           - name: "var"
