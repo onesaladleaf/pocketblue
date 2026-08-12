@@ -140,6 +140,7 @@ jobs:
 
       - name: Collect artifacts
         run: |
+          sudo rm -rf /run/user/$(id -u)/just
           just artifacts
 
           if [ -f "output/rootfs.ero" ]; then
