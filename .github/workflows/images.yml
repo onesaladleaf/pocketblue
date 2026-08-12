@@ -101,23 +101,25 @@ jobs:
           IMAGE_REGISTRY: ${{ vars.REGISTRY || format('ghcr.io/{0}', github.repository_owner) }}
         run: |
           if [ -n "${{ inputs.release_id }}" ]; then
-            echo "PB_COMPRESSION_7Z=-mmt=1 -md=1500m" >> $GITHUB_ENV
+            echo "PB_COMPRESSION_7Z=-mmt=1 -md=1500m" >> .env
           fi
 
           if [ -z "${{ steps.conf.outputs.device_variant }}" ]; then
-            echo "PB_TAG=${{ inputs.tag }}" >> $GITHUB_ENV
-            echo "PB_FULL_IMAGE=${IMAGE_REGISTRY,,}/${{ inputs.device }}-${{ matrix.desktop }}:${{ inputs.tag }}" >> $GITHUB_ENV
+            echo "PB_TAG=${{ inputs.tag }}" >> .env
+            echo "PB_FULL_IMAGE=${IMAGE_REGISTRY,,}/${{ inputs.device }}-${{ matrix.desktop }}:${{ inputs.tag }}" >> .env
           else
             pb_tag="${{ inputs.tag }}-${{ steps.conf.outputs.device_variant }}"
-            echo "PB_TAG=$pb_tag" >> $GITHUB_ENV
-            echo "PB_FULL_IMAGE=${IMAGE_REGISTRY,,}/${{ steps.conf.outputs.device_base }}-${{ matrix.desktop }}:${pb_tag}" >> $GITHUB_ENV
+            echo "PB_TAG=$pb_tag" >> .env
+            echo "PB_FULL_IMAGE=${IMAGE_REGISTRY,,}/${{ steps.conf.outputs.device_base }}-${{ matrix.desktop }}:${pb_tag}" >> .env
           fi
 
-          cat >> ${GITHUB_ENV} << EOF
+          cat >> .env << EOF
           PB_DEVICE=${{ inputs.device }}
           PB_DESKTOP=${{ matrix.desktop }}
           PB_REGISTRY=${IMAGE_REGISTRY,,}
           EOF
+
+          cat .env >> $GITHUB_ENV
 
       - uses: extractions/setup-just@v4
         with:
