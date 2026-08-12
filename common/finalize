@@ -8,3 +8,6 @@ find /var/* -maxdepth 0 -type d \! -name cache -exec rm -fr {} \;
 
 mkdir -p /var/tmp
 chmod -R 1777 /var/tmp
+
+# disable the legacy BIOS bootupd component
+rm /usr/lib/bootupd/updates/BIOS.json

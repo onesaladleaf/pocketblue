@@ -24,6 +24,3 @@ dnf -y swap glibc-all-langpacks glibc-langpack-en
 dnf -y remove dracut-config-rescue
 
 dnf -y remove nvidia-gpu-firmware
-
-# disable the legacy BIOS bootupd component
-rm /usr/lib/bootupd/updates/BIOS.json
