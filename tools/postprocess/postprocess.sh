@@ -6,9 +6,8 @@ kpartx -va $OUTPUT/disk.raw
 trap "kpartx -dv $OUTPUT/disk.raw" EXIT
 
 mapfile -t part < <(kpartx -l "$OUTPUT/disk.raw" | awk '{print "/dev/mapper/" $1}')
-# part[0] is an extra BIOS boot partition
-export esp_part="${part[1]}"
-export root_part="${part[2]}"
+export esp_part="${part[0]}"
+export root_part="${part[1]}"
 
 [ "$CONF_INSTALL_DTB" = "true" ] && $SCRIPTS/install-dtb.sh
 [ "$CONF_BUILD_EROFS" = "true" ] && $SCRIPTS/build-erofs.sh
