@@ -16,17 +16,7 @@ partition_table:
         fstab_options: "umask=0077,shortname=winnt"
         fstab_freq: 0
         fstab_passno: 2
-    - size: "1024 MiB"
-      type: "BC13C2FF-59E6-4262-A352-B275FD6F7172" # XBOOTLDR partition
-      payload_type: "filesystem"
-      payload:
-        type: "ext4"
-        mountpoint: "/boot"
-        label: "boot"
-        fstab_options: "ro"
-        fstab_freq: 0
-        fstab_passno: 0
-    - size: "4 GiB"
+    - size: "20 GiB"
       type: "0FC63DAF-8483-4772-8E79-3D69D8477DE4" # Linux Filesystem
       payload_type: "btrfs"
       payload:
