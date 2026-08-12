@@ -2,12 +2,11 @@
 
 set -uexo pipefail
 
-kpartx -va $OUTPUT/disk.raw
-trap "kpartx -dv $OUTPUT/disk.raw" EXIT
+loop=$(losetup --find --show --partscan --sector-size 4096 $OUTPUT/disk.raw)
+trap "losetup -d $loop" EXIT
 
-mapfile -t part < <(kpartx -l "$OUTPUT/disk.raw" | awk '{print "/dev/mapper/" $1}')
-export esp_part="${part[0]}"
-export root_part="${part[1]}"
+export esp_part="${loop}p1"
+export root_part="${loop}p2"
 
 [ "$CONF_INSTALL_DTB" = "true" ] && $SCRIPTS/install-dtb.sh
 [ "$CONF_BUILD_EROFS" = "true" ] && $SCRIPTS/build-erofs.sh
@@ -15,7 +14,7 @@ export root_part="${part[1]}"
 if [ "$CONF_SPLIT_PARTITIONS" = "true" ]; then
     $SCRIPTS/split-partitions.sh
     trap - EXIT
-    kpartx -dv $OUTPUT/disk.raw
+    losetup -d $loop
     rm $OUTPUT/disk.raw
 else
     chmod 666 $OUTPUT/disk.raw

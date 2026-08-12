@@ -1,6 +1,7 @@
 mount_configuration: "units"
 partition_table:
   type: "gpt"
+  sector_size: 4096
   partitions:
     - size: "256 MiB"
       type: "C12A7328-F81F-11D2-BA4B-00A0C93EC93B" # EFI system partition
