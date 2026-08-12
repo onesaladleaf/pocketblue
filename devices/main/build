@@ -3,3 +3,6 @@
 set -xeuo pipefail
 
 cp -arfT files/usr /usr
+
+# disable the legacy BIOS bootupd component (x86_64 only)
+rm /usr/lib/bootupd/updates/BIOS.json || true
